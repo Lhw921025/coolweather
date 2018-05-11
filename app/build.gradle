@@ -10,8 +10,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs{
-        config{
+    signingConfigs {
+        config {
             storeFile file("daren_android_key.jks")
             storePassword "87087766"
             keyAlias "daren"

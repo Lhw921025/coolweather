@@ -31,7 +31,6 @@ import java.util.List;
 import javax.security.auth.callback.Callback;
 
 import okhttp3.Response;
-
 /**
  * Created by liuhongwei on 2018/5/10.
  */
@@ -72,30 +71,29 @@ public class ChooseAreaFragment extends Fragment {
     * */
     private int currentLevel;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_area,container,false);
         titleText = (TextView) view.findViewById(R.id.title_text);
         backButton = (Button) view.findViewById(R.id.back_buton);
         listView = (ListView) view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE){
                     selectedProvince = provinceList.get(position);
-                    queryProvinces();
+                    queryCities();
                 }else if (currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
-                    queryCities();
+                    queryCounties();
                 }
             }
         });
@@ -221,7 +219,7 @@ public class ChooseAreaFragment extends Fragment {
     private void showProgressDialog(){
         if (progressDialog == null){
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("正在加载...");
+            progressDialog.setMessage("正在加载…");
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
@@ -232,4 +230,3 @@ public class ChooseAreaFragment extends Fragment {
         }
     }
 }
-
