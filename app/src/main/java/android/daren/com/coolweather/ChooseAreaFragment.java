@@ -2,14 +2,13 @@ package android.daren.com.coolweather;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.daren.com.coolweather.db.City;
 import android.daren.com.coolweather.db.Country;
 import android.daren.com.coolweather.db.Province;
-import android.daren.com.coolweather.util.HttpUtil;
+import android.daren.com.coolweather.util.HttpUtils;
 import android.daren.com.coolweather.util.Utility;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 import okhttp3.Response;
 /**
@@ -94,6 +89,12 @@ public class ChooseAreaFragment extends Fragment {
                 }else if (currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
                     queryCounties();
+                }else if (currentLevel == LEVEL_COUNTY){
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -175,7 +176,7 @@ public class ChooseAreaFragment extends Fragment {
     }
     private void queryFromServer(String address,final String type){
         showProgressDialog();
-        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback() {
+        HttpUtils.sendOkHttpRequest(address, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {

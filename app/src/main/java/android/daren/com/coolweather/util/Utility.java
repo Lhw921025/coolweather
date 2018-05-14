@@ -3,8 +3,10 @@ package android.daren.com.coolweather.util;
 import android.daren.com.coolweather.db.City;
 import android.daren.com.coolweather.db.Country;
 import android.daren.com.coolweather.db.Province;
-import android.os.Handler;
+import android.daren.com.coolweather.gson.Weather;
 import android.text.TextUtils;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,5 +81,19 @@ public class Utility {
             }
         }
         return false;
+    }
+    /*
+    *将返回的JSON 数据解析成 Weather 实体类
+    */
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
